@@ -13,6 +13,7 @@ hachoir
 heroku3
 html-telegraph-poster
 motor
+nekos.py
 oauth2client
 Pillow==7.1.0
 psutil
