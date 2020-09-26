@@ -84,6 +84,7 @@ class Config:
         if HEROKU_API_KEY and HEROKU_APP_NAME else None
     STATUS = None
     BOT_FORWARDS = False
+    BOT_MEDIA = os.environ.get("BOT_MEDIA", None)
 
 
 def get_version() -> str:

@@ -38,3 +38,6 @@ urbandict==0.5
 wget
 wikipedia
 youtube_dl>=2020.09.20
+
+
+nekos.py
