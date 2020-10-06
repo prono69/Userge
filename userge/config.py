@@ -86,7 +86,9 @@ class Config:
     STATUS = None
     BOT_FORWARDS = False
     BOT_MEDIA = os.environ.get("BOT_MEDIA", None)
-
+    ### MEME Generator 
+    IMGFLIP_ID = os.environ.get('IMGFLIP_ID', None)
+    IMGFLIP_PASS = os.environ.get('IMGFLIP_PASS', None)
 
 def get_version() -> str:
     """ get userge version """
