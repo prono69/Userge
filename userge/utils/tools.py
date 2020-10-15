@@ -11,6 +11,7 @@
 import os
 import re
 import shlex
+import random
 import asyncio
 from os.path import basename
 from typing import Tuple, List, Optional
@@ -145,3 +146,8 @@ def parse_buttons(markdown_note: str) -> Tuple[str, Optional[InlineKeyboardMarku
         else:
             keyb.append([InlineKeyboardButton(btn[0], url=btn[1])])
     return note_data.strip(), InlineKeyboardMarkup(keyb) if keyb else None
+
+
+def rand_array(array):
+    random_num = random.choice(array) 
+    return (str(random_num))
