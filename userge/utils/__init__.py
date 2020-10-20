@@ -17,4 +17,5 @@ from .tools import (demojify,  # noqa
                     post_to_telegraph,
                     runcmd,
                     take_screen_shot,
-                    parse_buttons)
+                    parse_buttons,
+                    rand_array)
