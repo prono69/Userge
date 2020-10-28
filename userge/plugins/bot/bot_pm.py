@@ -43,9 +43,9 @@ if Config.BOT_TOKEN and Config.OWNER_ID:
         u_n = master.username
         hello = f"""
 Hello {f_name},
-Nice To Meet You! I'm **{bot.first_name}** A Bot.
+Nice To Meet You! I'm **{bot.first_name}**, A Bot.
  
-        <i><b>Powered by</i> [USERGE-X](https://t.me/x_xtests)</b>
+        <i><b>Powered by</i> [PEPE_SERGE](https://t.me/LazyAF_Geng)</b>
  
 <b>My Master is: {master.first_name}</b>
 <i>You can contact my <b>Master</b> and checkout the <b>Repo</b> For more info.</i>
@@ -127,7 +127,7 @@ Nice To Meet You! I'm **{bot.first_name}** A Bot.
                 caption=caption_text,
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("CONTACT", url=f"t.me/{u_n}"),
-                    InlineKeyboardButton("REPO", url="https://github.com/code-rgb/USERGE-X")],
+                    InlineKeyboardButton("REPO", url="https://github.com/prono69/Userge")],
                     [InlineKeyboardButton("➕ ADD TO GROUP", callback_data="add_to_grp")
                     ]]
                 )
@@ -152,7 +152,7 @@ Nice To Meet You! I'm **{bot.first_name}** A Bot.
                     reply_markup=InlineKeyboardMarkup(buttons)
             )
         else:
-            await callback_query.answer("ONLY MY MASTER CAN DO THAT ! \n\n 𝘿𝙚𝙥𝙡𝙤𝙮 𝙮𝙤𝙪𝙧 𝙤𝙬𝙣 𝙐𝙎𝙀𝙍𝙂𝙀-𝙓 !", show_alert=True)
+            await callback_query.answer("ONLY MY MASTER CAN DO THAT ! \n\n 𝘿𝙚𝙥𝙡𝙤𝙮 𝙮𝙤𝙪𝙧 𝙤𝙬𝙣 𝙐𝙎𝙀𝙍𝙂𝙀 !", show_alert=True)
  
  
 @userge.on_cmd("bot_users", about={
