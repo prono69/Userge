@@ -7,9 +7,11 @@
 # All rights reserved.
 
 import re
+import os
 import asyncio
 from typing import Tuple, Optional
 
+import wget
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import (
     ChatSendMediaForbidden, Forbidden, SlowmodeWait, PeerIdInvalid,
@@ -105,18 +107,7 @@ async def _send_alive(message: Message,
         await _refresh_id(message)
     should_mark = None if _IS_STICKER else reply_markup
     if _IS_TELEGRAPH:
-        try:
-            await message.client.send_document(chat_id=message.chat.id,
-                                               document=Config.ALIVE_MEDIA,
-                                               caption=text,
-                                               reply_markup=should_mark)
-        except SlowmodeWait as s_m:
-            await asyncio.sleep(s_m.x)
-            text = f'<b>{str(s_m).replace(" is ", " was ")}</b>\n\n{text}'
-            return await _send_alive(message, text, reply_markup)
-        except Exception:
-            _LOG.error('Telegraph Link Invalid')
-            _set_data(True)
+        await _send_telegraph(message, text, reply_markup)
     else:
         try:
             await message.client.send_cached_media(chat_id=message.chat.id,
@@ -159,7 +150,7 @@ def _set_data(errored: bool = False) -> None:
     global _CHAT, _MSG_ID, _IS_TELEGRAPH  # pylint: disable=global-statement
 
     pattern_1 = r"^(http(?:s?):\/\/)?(www\.)?(t.me)(\/c\/(\d+)|:?\/(\w+))?\/(\d+)$"
-    pattern_2 = r"^(http(?:s?):\/\/)?(www\.)?telegra\.ph\/([A-Za-z0-9\-]*)$"
+    pattern_2 = r"^https://telegra\.ph/file/\w+\.\w+$"
     if Config.ALIVE_MEDIA and not errored:
         if Config.ALIVE_MEDIA.lower().strip() == "nothing":
             _CHAT = "text_format"
@@ -184,3 +175,30 @@ def _set_data(errored: bool = False) -> None:
         match = re.search(pattern_1, _DEFAULT)
         _CHAT = match.group(6)
         _MSG_ID = int(match.group(7))
+
+
+async def _send_telegraph(msg: Message, text: str, reply_markup: Optional[InlineKeyboardMarkup]):
+    path = os.path.join(Config.DOWN_PATH, os.path.split(Config.ALIVE_MEDIA)[1])
+    if not os.path.exists(path):
+        wget.download(Config.ALIVE_MEDIA, path)
+    if path.lower().endswith((".jpg", ".jpeg", ".png", ".bmp")):
+        await msg.client.send_photo(
+            chat_id=msg.chat.id,
+            photo=path,
+            caption=text,
+            reply_markup=reply_markup
+        )
+    elif path.lower().endswith((".mkv", ".mp4", ".webm")):
+        await msg.client.send_video(
+            chat_id=msg.chat.id,
+            video=path,
+            caption=text,
+            reply_markup=reply_markup
+        )
+    else:
+        await msg.client.send_document(
+            chat_id=msg.chat.id,
+            document=path,
+            caption=text,
+            reply_markup=reply_markup
+        )
