@@ -120,27 +120,50 @@ async def demote_usr(message: Message):
     'header': "use this to ban group members",
     'description': "Ban member from supergroup.\n"
                    "[NOTE: Requires proper admin rights in the chat!!!]",
-    'examples': "{tr}ban [username | userid] or [reply to user] :reason (optional)"},
+    'flags': {
+        '-m': "minutes",
+        '-h': "hours",
+        '-d': "days"},
+    'examples': "{tr}ban [flag] [username | userid] or [reply to user] :reason (optional)"},
     allow_channels=False, check_restrict_perm=True)
-async def ban_usr(message: Message):
+async def ban_user(message: Message):
     """ ban user from tg group """
-    reason = ""
-    chat_id = message.chat.id
     await message.edit("`Trying to Ban User.. Hang on!! ⏳`")
+    reason = ""
     user_id, reason = message.extract_user_and_text
     if not user_id:
         await message.edit(
             text="`no valid user_id or message specified,`"
-            "`do .help ban for more info` ⚠", del_in=5)
+            "`do .help ban for more info`", del_in=5)
         return
+
+    chat_id = message.chat.id
+    flags = message.flags
+    minutes = int(flags.get('-m', 0))
+    hours = int(flags.get('-h', 0))
+    days = int(flags.get('-d', 0))
+
+    ban_period = 0
+    _time = "forever"
+    if minutes:
+        ban_period = time.time() + minutes * 60
+        _time = f"{minutes}m"
+    elif hours:
+        ban_period = time.time() + hours * 3600
+        _time = f"{hours}h"
+    elif days:
+        ban_period = time.time() + days * 86400
+        _time = f"{days}d"
+
     try:
         get_mem = await message.client.get_chat_member(chat_id, user_id)
-        await message.client.kick_chat_member(chat_id, user_id)
+        await message.client.kick_chat_member(chat_id, user_id, int(ban_period))
         await message.edit(
             "#BAN\n\n"
             f"USER: [{get_mem.user.first_name}](tg://user?id={get_mem.user.id}) "
             f"(`{get_mem.user.id}`)\n"
             f"CHAT: `{message.chat.title}` (`{chat_id}`)\n"
+            f"TIME: `{_time}`\n"
             f"REASON: `{reason}`", log=__name__)
     except UsernameInvalid:
         await message.edit("`invalid username, try again with valid info ⚠`", del_in=5)
@@ -150,7 +173,9 @@ async def ban_usr(message: Message):
     except UserIdInvalid:
         await message.edit("`invalid userid, try again with valid info ⚠`", del_in=5)
     except Exception as e_f:
-        await message.edit(f"`something went wrong! 🤔`\n\n**ERROR:** `{e_f}`", del_in=5)
+        await message.edit(
+            "`something went wrong 🤔, do .help ban for more info`\n\n"
+            f"**ERROR**: `{e_f}`", del_in=5)
 
 
 @userge.on_cmd("unban", about={
@@ -252,10 +277,13 @@ async def mute_usr(message: Message):
         return
     if minutes:
         mute_period = int(minutes) * 60
+        _time = f"{int(minutes)}m"
     elif hours:
         mute_period = int(hours) * 3600
+        _time = f"{int(hours)}h"
     elif days:
         mute_period = int(days) * 86400
+        _time = f"{int(days)}d"
     if flags:
         try:
             get_mem = await message.client.get_chat_member(chat_id, user_id)
@@ -268,7 +296,7 @@ async def mute_usr(message: Message):
                 f"USER: [{get_mem.user.first_name}](tg://user?id={get_mem.user.id}) "
                 f"(`{get_mem.user.id}`)\n"
                 f"CHAT: `{message.chat.title}` (`{chat_id}`)\n"
-                f"MUTE UNTIL: `{minutes} minutes`\n"
+                f"MUTE UNTIL: `{_time}`\n"
                 f"REASON: `{reason}`", log=__name__)
         except UsernameInvalid:
             await message.edit("`invalid username, try again with valid info ⚠`", del_in=5)
@@ -430,11 +458,17 @@ async def pin_msgs(message: Message):
     """ pin & unpin message in groups """
     chat_id = message.chat.id
     flags = message.flags
-    silent_pin = '-s' in flags
+    disable_notification = False
+    if '-s' in flags:
+        disable_notification = True
     unpin_pinned = '-u' in flags
     if unpin_pinned:
         try:
-            await message.client.unpin_chat_message(chat_id)
+            if message.reply_to_message:
+                await message.client.unpin_chat_message(
+                    chat_id, message.reply_to_message.message_id)
+            else:
+                await message.client.unpin_all_chat_messages(chat_id)
             await message.delete()
             await CHANNEL.log(
                 f"#UNPIN\n\nCHAT: `{message.chat.title}` (`{chat_id}`)")
@@ -443,23 +477,11 @@ async def pin_msgs(message: Message):
                 r"`something went wrong! (⊙_⊙;)`"
                 "\n`do .help pin for more info..`\n\n"
                 f"**ERROR:** `{e_f}`")
-    elif silent_pin:
-        try:
-            message_id = message.reply_to_message.message_id
-            await message.client.pin_chat_message(
-                chat_id, message_id, disable_notification=True)
-            await message.delete()
-            await CHANNEL.log(
-                f"#PIN-SILENT\n\n{message.chat.title}` (`{chat_id}`)")
-        except Exception as e_f:
-            await message.edit(
-                r"`something went wrong! (⊙_⊙;)`"
-                "\n`do .help pin for more info..`\n\n"
-                f"**ERROR:** `{e_f}`")
     else:
         try:
             message_id = message.reply_to_message.message_id
-            await message.client.pin_chat_message(chat_id, message_id)
+            await message.client.pin_chat_message(
+                chat_id, message_id, disable_notification=disable_notification)
             await message.delete()
             await CHANNEL.log(
                 f"#PIN\n\nCHAT: `{message.chat.title}` (`{chat_id}`)")
@@ -490,9 +512,8 @@ async def chatpic_func(message: Message):
         if message.reply_to_message.photo:
             try:
                 img_id = message.reply_to_message.photo.file_id
-                img_ref = message.reply_to_message.photo.file_ref
                 await message.client.set_chat_photo(
-                    chat_id=chat_id, photo=img_id, file_ref=img_ref)
+                    chat_id=chat_id, photo=img_id)
                 await message.delete()
                 await CHANNEL.log(
                     f"#GPIC-SET\n\nCHAT: `{message.chat.title}` (`{chat_id}`)")

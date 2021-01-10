@@ -144,10 +144,10 @@ async def ipmguard(message: Message):
     global _IS_INLINE  # pylint: disable=global-statement
     if _IS_INLINE:
         _IS_INLINE = False
-        await message.edit("`Inline PM_guard activated`", del_in=3, log=__name__)
+        await message.edit("`Inline PM_guard deactivated`", del_in=3, log=__name__)
     else:
         _IS_INLINE = True
-        await message.edit("`Inline PM_guard deactivated`", del_in=3, log=__name__)
+        await message.edit("`Inline PM_guard activated`", del_in=3, log=__name__)
     await SAVED_SETTINGS.update_one(
         {'_id': 'INLINE_PM_PERMIT'}, {"$set": {'data': _IS_INLINE}}, upsert=True)
 
@@ -328,8 +328,9 @@ if userge.has_bot:
         owner = await userge.get_me()
         if c_q.from_user.id == owner.id:
             userID = int(c_q.matches[0].group(1))
+            user_dict = await userge.get_user_dict(userID)
             await userge.send_message(
-                userID, f"{owner.mention} `decided you to block, Sorry.`")
+                userID, blocked_message.format_map(SafeDict(**user_dict)))
             await userge.block_user(userID)
             if userID in pmCounter:
                 del pmCounter[userID]
