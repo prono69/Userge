@@ -29,7 +29,7 @@ class Config:
     """ Configs to setup Userge """
     API_ID = int(os.environ.get("API_ID"))
     API_HASH = os.environ.get("API_HASH")
-    WORKERS = min(32, int(os.environ.get("WORKERS")) or os.cpu_count() + 4)
+    WORKERS = int(os.environ.get("WORKERS")) or os.cpu_count() + 4
     BOT_TOKEN = os.environ.get("BOT_TOKEN", None)
     HU_STRING_SESSION = os.environ.get("HU_STRING_SESSION", None)
     OWNER_ID = tuple(filter(lambda x: x, map(int, os.environ.get("OWNER_ID", "0").split())))
@@ -78,6 +78,8 @@ class Config:
     USE_USER_FOR_CLIENT_CHECKS = False
     SUDO_ENABLED = False
     SUDO_USERS: Set[int] = set()
+    DISABLED_ALL = False
+    DISABLED_CHATS: Set[int] = set()
     ALLOWED_COMMANDS: Set[str] = set()
     ANTISPAM_SENTRY = False
     RUN_DYNO_SAVER = False

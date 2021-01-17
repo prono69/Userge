@@ -44,7 +44,7 @@ G_DRIVE_DIR_MIME_TYPE = "application/vnd.google-apps.folder"
 G_DRIVE_FILE_LINK = "📄 <a href='https://drive.google.com/open?id={}'>{}</a> __({})__"
 G_DRIVE_FOLDER_LINK = "📁 <a href='https://drive.google.com/drive/folders/{}'>{}</a> __(folder)__"
 _GDRIVE_ID = re.compile(
-    r'https://drive.google.com/[\w\?\./&=]+([-\w]{33}|(?<=[/=])0(?:A[-\w]{17}|B[-\w]{26}))')
+    r'https://drive.google.com/[\w?.&=/]+([-\w]{33}|(?<=[/=])0(?:A[-\w]{17}|B[-\w]{26}))')
 
 _LOG = userge.getLogger(__name__)
 _SAVED_SETTINGS = get_collection("CONFIGS")
@@ -161,7 +161,6 @@ class _GDrive:
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
-        del results
         if not msg:
             return "`Not Found!`"
         if parent_id and not force:
@@ -254,9 +253,9 @@ class _GDrive:
                         "**ETA** : `{}`"
                     self._progress = tmp.format(
                         "".join((Config.FINISHED_PROGRESS_STR
-                                 for i in range(math.floor(percentage / 5)))),
+                                 for _ in range(math.floor(percentage / 5)))),
                         "".join((Config.UNFINISHED_PROGRESS_STR
-                                 for i in range(20 - math.floor(percentage / 5)))),
+                                 for _ in range(20 - math.floor(percentage / 5)))),
                         round(percentage, 2),
                         file_name,
                         humanbytes(f_size),
@@ -351,9 +350,9 @@ class _GDrive:
                         "**ETA** : `{}`"
                     self._progress = tmp.format(
                         "".join((Config.FINISHED_PROGRESS_STR
-                                 for i in range(math.floor(percentage / 5)))),
+                                 for _ in range(math.floor(percentage / 5)))),
                         "".join((Config.UNFINISHED_PROGRESS_STR
-                                 for i in range(20 - math.floor(percentage / 5)))),
+                                 for _ in range(20 - math.floor(percentage / 5)))),
                         round(percentage, 2),
                         name,
                         humanbytes(f_size),
@@ -442,9 +441,9 @@ class _GDrive:
             "**Completed** : `{}/{}`"
         self._progress = tmp.format(
             "".join((Config.FINISHED_PROGRESS_STR
-                     for i in range(math.floor(percentage / 5)))),
+                     for _ in range(math.floor(percentage / 5)))),
             "".join((Config.UNFINISHED_PROGRESS_STR
-                     for i in range(20 - math.floor(percentage / 5)))),
+                     for _ in range(20 - math.floor(percentage / 5)))),
             round(percentage, 2),
             self._completed,
             self._list)
@@ -732,7 +731,7 @@ class Worker(_GDrive):
         """ Upload from file/folder/link/tg file to GDrive """
         replied = self._message.reply_to_message
         is_url = re.search(
-            r"(?:https?|ftp)://[^\|\s]+\.[^\|\s]+", self._message.input_str)
+            r"(?:https?|ftp)://[^|\s]+\.[^|\s]+", self._message.input_str)
         dl_loc = ""
         if replied and replied.media:
             try:
@@ -959,7 +958,10 @@ async def gsetup_(message: Message):
     """ setup creds """
     link = "https://theuserge.github.io/deployment.html#3-g_drive_client_id--g_drive_client_secret"
     if Config.G_DRIVE_CLIENT_ID and Config.G_DRIVE_CLIENT_SECRET:
-        await Worker(message).setup()
+        if message.chat.id == Config.LOG_CHANNEL_ID:
+            await Worker(message).setup()
+        else:
+            await message.err("try in log channel")
     else:
         await message.edit(
             "`G_DRIVE_CLIENT_ID` and `G_DRIVE_CLIENT_SECRET` not found!\n"
