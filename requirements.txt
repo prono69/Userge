@@ -4,6 +4,7 @@ bs4
 covid
 cowpy
 dnspython
+emoji==0.6.0
 gitpython
 google-api-python-client
 google-auth-httplib2
@@ -19,7 +20,7 @@ oauth2client
 Pillow==8.0
 psutil
 pybase64
-pyrogram==1.1.12
+pyrogram==1.1.13
 pySmartDL
 python-dotenv
 pytz
