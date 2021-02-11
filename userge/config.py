@@ -92,6 +92,7 @@ class Config:
     ### MEME Generator 
     IMGFLIP_ID = os.environ.get('IMGFLIP_ID', None)
     IMGFLIP_PASS = os.environ.get('IMGFLIP_PASS', None)
+    DEEP_AI = os.environ.get('DEEP_AI', None)
 
 def get_version() -> str:
     """ get userge version """
