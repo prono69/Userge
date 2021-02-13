@@ -46,7 +46,7 @@ async def see_info(message: Message):
         return await message.err("provide a valid command name", del_in=5)
     repo = Repo()
     branch = repo.active_branch.name
-    if branch == "beta":
+    if branch == "master":
         branch = "beta"
     plugin_name = userge.manager.commands[cmd_str].plugin_name
     plugin_loc = ("/" + userge.manager.plugins[plugin_name].parent).replace(
