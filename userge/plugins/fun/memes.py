@@ -1,10 +1,10 @@
 """ enjoy memes """
 
-# Copyright (C) 2020 by UsergeTeam@Github, < https://github.com/UsergeTeam >.
+# Copyright (C) 2020-2021 by UsergeTeam@Github, < https://github.com/UsergeTeam >.
 #
 # This file is part of < https://github.com/UsergeTeam/Userge > project,
 # and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/uaudith/Userge/blob/master/LICENSE >
+# Please see < https://github.com/UsergeTeam/Userge/blob/master/LICENSE >
 #
 # All rights reserved.
 
@@ -18,7 +18,7 @@ import wget
 import requests
 from cowpy import cow
 
-from userge import userge, Message
+from userge import userge, Message, pool
 
 
 @userge.on_cmd(r"(?:Kek|:/)$",
@@ -206,7 +206,7 @@ async def moon_(message: Message):
         for _ in range(32):
             await message.edit("".join(deq))
             deq.rotate(1)
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         await message.delete()
 
 
@@ -218,7 +218,7 @@ async def clock_(message: Message):
         for _ in range(36):
             await message.edit("".join(deq))
             deq.rotate(1)
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         await message.delete()
 
 
@@ -331,7 +331,7 @@ async def slap_(message: Message):
                                   throws=throw, where=where)
     try:
         await message.edit(caption)
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         await message.edit(
             "`Can't slap this person, need to fetch some sticks and stones !!`")
 
@@ -348,7 +348,7 @@ async def decide_(message: Message):
         r = requests.get(f"https://yesno.wtf/api?force={decision}").json()
     else:
         r = requests.get("https://yesno.wtf/api").json()
-    path = wget.download(r["image"])
+    path = await pool.run_in_thread(wget.download)(r["image"])
     chat_id = message.chat.id
     message_id = message.reply_to_message.message_id if message.reply_to_message else None
     await message.delete()
@@ -547,7 +547,7 @@ async def scam_(message: Message):
                 await message.client.send_chat_action(chat_id, scam_action)
                 await asyncio.sleep(5)
                 count += 5
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         await message.delete()
 
 

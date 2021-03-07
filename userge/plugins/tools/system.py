@@ -1,9 +1,9 @@
 """ system commands """
-# Copyright (C) 2020 by UsergeTeam@Github, < https://github.com/UsergeTeam >.
+# Copyright (C) 2020-2021 by UsergeTeam@Github, < https://github.com/UsergeTeam >.
 #
 # This file is part of < https://github.com/UsergeTeam/Userge > project,
 # and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/uaudith/Userge/blob/master/LICENSE >
+# Please see < https://github.com/UsergeTeam/Userge/blob/master/LICENSE >
 #
 # All rights reserved.
 
@@ -58,7 +58,7 @@ async def restart_(message: Message):
     if 'd' in message.flags:
         shutil.rmtree(Config.DOWN_PATH, ignore_errors=True)
     if 'h' in message.flags:
-        if Config.HEROKU_ENV and Config.HEROKU_APP:
+        if Config.HEROKU_APP:
             await message.edit(
                 '`Heroku app found, trying to restart dyno...\nthis will take upto 30 sec`',
                 del_in=3)
