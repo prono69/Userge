@@ -39,3 +39,4 @@ wget
 wikipedia
 youtube_dl>=2021.1.8
 nekos.py
+ujson>=4.0.1
