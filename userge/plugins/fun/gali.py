@@ -43,7 +43,10 @@ gaali = (
     "Tere saat Johnny sins rape Kare aur jab wo teko anal de tab loda andar fas Jaye bkl tere jhaat pe waxing karunga me dhek lio fir jab tu chillayega na tab tere muh me Mai gai ka gobar dalunga",
     "Tere lode pe madhu makkhi Katelode ke ando pe Road roller chale tu kab bathroom me muthne Jaye tho Tera loda ghir Jaye fir tere ando me se lizard ke bacche nikle teko kidnap Kare aur childporn banaye maa ke chuttad ke lode",
     "Tujhetho gali ke kutte gand pe chut rakh ke katenge me bata raha hu",
-    "Madarchod Randi ke bacche Oye bosdike madarchod bhen ke lode tere gand me lohe ka danda garam karke dalu randwe")
+    "Madarchod Randi ke bacche Oye bosdike madarchod bhen ke lode tere gand me lohe ka danda garam karke dalu randwe",
+    "Uss raat mene mehnat se gaddha khoda\nFir kyu paida hua tere jaisa bokachoda",
+    "Joe mama farted so hard that gave birth to a Retard like u",
+    "Bhosdike Madarchod Behen ke lawde Macchar ki jhat Gandu Tatto ke sawdagar Maa ki chut teri")
 stickers_ids = (
     "CAADBQADlgADje9BLb-DhGHGfbx6FgQ",
     "CAADBQADBgAD-xNYN79jb8hXjxhyFgQ",
@@ -52,4 +55,6 @@ stickers_ids = (
     "CAADBQADzwADje9BLT69DmYKUwd_FgQ",
     "CAADBQADAQADh68vOP4aZy5tiSXlFgQ",
     "CAADBQADKAADh68vOAABLBgqCrYYFRYE",
-    "CAADBQADLgADh68vODlskrbAM9dEFgQ")
+    "CAADBQADLgADh68vODlskrbAM9dEFgQ",
+    "CAADBQADfwEAAgKbJz-izOvZrdFRZAI",
+    "CAADBQAD8QADSydJNMCNBb9XbUgKAg")

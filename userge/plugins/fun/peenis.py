@@ -2,6 +2,7 @@
 # Don't remove credits plox
 
 from userge import userge, Message
+from userge.plugins.fun.gali import check_and_send as lol
 
 PENIS_TEMPLATE = """
 🍆🍆
@@ -26,10 +27,8 @@ PENIS_TEMPLATE = """
     'description': "Dickifying everything :)"})
 async def emoji_penis(e: Message):
     emoji = e.input_str
-
-    await e.edit("`Dickifying...`")
     message = PENIS_TEMPLATE
     if emoji:
         message = message.replace("🍆", emoji)
 
-    await e.edit(message)
+    await lol(e, message)
