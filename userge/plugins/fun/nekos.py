@@ -21,25 +21,23 @@ for m in SFW:
 
 
 @userge.on_cmd(
-    "n",
+    "ne",
     about={
         "header": "Get NSFW / SFW stuff from nekos.life",
-        "flags": {"n": "For random NSFW"},
-        "usage": "{tr}n\n{tr}n -n\n{tr}n [Choice]",
+        "flags": {"ne": "For random NSFW"},
+        "usage": "{tr}ne\n{tr}ne -nsfw\n{tr}ne [Choice]",
         "Choice": neko_help,
     },
 )
 async def neko_life(message: Message):
     choice = message.input_str
-    if "-n" in message.flags:
+    if "-nsfw" in message.flags:
     	link = (await client.random_image(nsfw=True)).url
     elif choice:
         input_choice = (choice.strip()).upper()
         if input_choice in SFW:
             link = (await client.image(SFWImageTags[input_choice])).url
         elif input_choice in NSFW:
-            if await age_verification(message):
-                return
             link = (await client.image(NSFWImageTags[input_choice])).url
         else:
             await message.err(

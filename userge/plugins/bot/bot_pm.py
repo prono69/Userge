@@ -88,7 +88,7 @@ Nice To Meet You! I'm **{bot.first_name}**, A Bot.
         except ChannelInvalid:
             _set_data(True)
             return await _refresh_id(message)
-        LOGO_ID, LOGO_REF = get_file_id_of_media(media)
+        LOGO_ID, LOGO_REF = get_file_id_of_media(await userge.bot.get_messages("useless_x", 2))
  
  
     def _set_data(errored: bool = False) -> None:
