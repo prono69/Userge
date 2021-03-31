@@ -2,17 +2,17 @@
 # Module by @deleteduser420 (https://github.com/code-rgb)
 # Copyright 2017, Shanshan Wang, MIT license
 # Based on https://gist.github.com/wshanshan/c825efca4501a491447056849dd207d6
-
+ 
 import os
 import random
-
+ 
 import numpy as np
 from colour import Color
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from userge import Config, Message, userge
 from userge.utils import media_to_image
-
-
+ 
+ 
 @userge.on_cmd(
     "ascii",
     about={
@@ -47,8 +47,8 @@ async def ascii_(message: Message):
     await message.delete()
     os.remove(img_file)
     os.remove(dls_loc)
-
-
+ 
+ 
 def asciiart(in_f, SC, GCF, color1, color2, bgcolor, ascii_type):
     chars = np.asarray(list(" .,:irs?@9B&#"))
     font = ImageFont.load_default()
@@ -84,11 +84,12 @@ def asciiart(in_f, SC, GCF, color1, color2, bgcolor, ascii_type):
     img_file = os.path.join(Config.DOWN_PATH, image_name)
     newImg.save(img_file)
     return img_file
-
-
+ 
+ 
 def random_color():
     number_of_colors = 2
     return [
         "#" + "".join([random.choice("0123456789ABCDEF") for j in range(6)])
         for i in range(number_of_colors)
     ]
+ 

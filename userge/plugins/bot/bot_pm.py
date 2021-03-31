@@ -3,7 +3,7 @@
 """Module that handles Bot PM"""
 import re
 from userge import userge, Message, Config, get_collection, logging
-from userge.utils import get_file_id_and_ref
+from userge.utils import get_file_id_of_media
 from pyrogram.types import (  
      InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery )
 from pyrogram import filters
@@ -88,7 +88,7 @@ Nice To Meet You! I'm **{bot.first_name}**, A Bot.
         except ChannelInvalid:
             _set_data(True)
             return await _refresh_id(message)
-        LOGO_ID, LOGO_REF = get_file_id_and_ref(media)
+        LOGO_ID, LOGO_REF = get_file_id_of_media(media)
  
  
     def _set_data(errored: bool = False) -> None:

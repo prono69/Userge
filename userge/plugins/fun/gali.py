@@ -46,7 +46,9 @@ gaali = (
     "Madarchod Randi ke bacche Oye bosdike madarchod bhen ke lode tere gand me lohe ka danda garam karke dalu randwe",
     "Uss raat mene mehnat se gaddha khoda\nFir kyu paida hua tere jaisa bokachoda",
     "Joe mama farted so hard that gave birth to a Retard like u",
-    "Bhosdike Madarchod Behen ke lawde Macchar ki jhat Gandu Tatto ke sawdagar Maa ki chut teri")
+    "Bhosdike Madarchod Behen ke lawde Macchar ki jhat Gandu Tatto ke sawdagar Maa ki chut teri",
+    "Behenchod tere gand main Sariya dal dunga")
+    
 stickers_ids = (
     "CAADBQADlgADje9BLb-DhGHGfbx6FgQ",
     "CAADBQADBgAD-xNYN79jb8hXjxhyFgQ",

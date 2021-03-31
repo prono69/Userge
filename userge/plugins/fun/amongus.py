@@ -53,7 +53,7 @@ async def among_us(message: Message):
     else:
         await message.err("`Input not found!...`", del_in=5)
         return
-    await message.edit("What the SUS")
+    await message.edit("What the SUS!")
     if message.flags:
         choice = list((message.flags).keys())[0]
         choice = choice.replace("-", "")
@@ -96,4 +96,4 @@ async def amongus_gen(text: str, clr: int) -> str:
     webp_file = os.path.join(Config.DOWN_PATH, output.name)
     image.save(webp_file, "WebP")
     return webp_file
- 
+    

@@ -168,5 +168,5 @@ def safe_filename(path_):
     safename = path_.replace("'", "").replace('"', "")
     if safename != path_:
         os.rename(path_, safename)
-        return safename
-    return path_    
+    return safename
+    
