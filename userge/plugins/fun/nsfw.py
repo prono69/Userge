@@ -2,8 +2,10 @@ import os
 import urllib
 import requests
 import asyncio
-from asyncio import sleep
 from userge import userge , Message, Config
+from userge.plugins.fun.nekos import send_nekos
+
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.124 Safari/537.36"
 
 
 @userge.on_cmd("boobs", about={
@@ -37,3 +39,24 @@ async def butts(message: Message):
     await message.client.send_photo(message.chat.id, photo=pic_loc)
     os.remove(pic_loc)
     await message.delete()
+    
+@userge.on_cmd("hentai", about={
+    'header': "Random hentai pics",
+    'usage': "{tr}hentai"})
+async def butts(message: Message):
+    nsfw = requests.get("https://api.computerfreaker.cf/v1/hentai", headers={"User-Agent": user_agent}).json()
+    link = nsfw.get("url")
+    await send_nekos(message, link)
+    await message.delete()
+    
+@userge.on_cmd("lewdn", about={
+    'header': "Random lewd neko pics",
+    'usage': "{tr}lewdn"})
+async def dva(message: Message):
+    nsfw = requests.get("https://nekos.life/api/lewd/neko").json()
+    link = nsfw.get("neko")
+    if not url:
+        await message.edit("`No lewd neko found. U stay horni now :)`", del_in=4)
+        return
+    await send_nekos(message, link)
+    await event.delete()    

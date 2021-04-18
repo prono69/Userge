@@ -3,7 +3,6 @@ import os
 from anekos import NekosLifeClient, NSFWImageTags, SFWImageTags
 from pyrogram.errors import MediaEmpty, WebpageCurlFailed
 from wget import download
-
 from userge import Message, userge
 
 client = NekosLifeClient()
@@ -73,3 +72,5 @@ async def send_nekos(message: Message, link: str):
         await message.client.send_photo(
             chat_id=message.chat.id, photo=link, reply_to_message_id=reply_id
         )
+
+        
