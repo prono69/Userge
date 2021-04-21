@@ -1,4 +1,4 @@
-"""Song link for all supported music streaming platform"""
+"""song link for all supported music streaming platform"""
  
 # Copyright (C) 2021 BY USERGE-X
 # All rights reserved.
@@ -44,8 +44,9 @@ async def get_song_link(link: str) -> Optional[Dict]:
             "https://api.song.link/v1-alpha.1/links?url=" + quote(link)
         )
     except ValueError:
-        r = None
-    return r
+        pass
+    else:
+        return r
  
  
 async def find_url_from_msg(message: Message, show_err: bool = True) -> Optional[str]:
@@ -71,9 +72,10 @@ async def find_url_from_msg(message: Message, show_err: bool = True) -> Optional
         if show_err:
             await message.err("No Valid URL was found !", del_in=5)
         return
-    y = url_e[0]
-    link = txt[y.offset : (y.offset + y.length)] if y.type == "url" else y.url
-    return link, msg
+    if len(url_e) > 0:
+        y = url_e[0]
+        link = txt[y.offset : (y.offset + y.length)] if y.type == "url" else y.url
+        return link, msg
  
  
 def beautify(text: str) -> str:
