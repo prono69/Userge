@@ -85,7 +85,7 @@ class Config:
         if HEROKU_ENV and HEROKU_API_KEY and HEROKU_APP_NAME else None
     STATUS = None
     BOT_FORWARDS = False
-    BOT_MEDIA = os.environ.get("BOT_MEDIA", None)
+    BOT_MEDIA = os.environ.get("BOT_MEDIA", "https://t.me/LazyAF_Pepe/42")
     ### MEME Generator 
     IMGFLIP_ID = os.environ.get('IMGFLIP_ID', None)
     IMGFLIP_PASS = os.environ.get('IMGFLIP_PASS', None)

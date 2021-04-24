@@ -19,6 +19,7 @@ BOT_START = get_collection("BOT_START")
 LOGO_ID, LOGO_REF = None, None
 _CHAT, _MSG_ID = None, None
 _DEFAULT = "https://t.me/useless_x/2"
+_KORO = "https://t.me/LazyAF_Pepe/44"
  
 # refresh file id and file reference from TG server
  
@@ -88,7 +89,7 @@ Nice To Meet You! I'm **{bot.first_name}**, A Bot.
         except ChannelInvalid:
             _set_data(True)
             return await _refresh_id(message)
-        LOGO_ID, LOGO_REF = get_file_id_of_media(await userge.bot.get_messages("useless_x", 2))
+        LOGO_ID, LOGO_REF = get_file_id_of_media(_KORO)
  
  
     def _set_data(errored: bool = False) -> None:
