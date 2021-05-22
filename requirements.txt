@@ -42,6 +42,6 @@ wget
 wikipedia
 youtube_dl>=2021.1.8
 nekos.py
-ujson>=4.0.1
+ujson
 git+https://github.com/Nekos-life/Async-nekos.life-wrapper
 youtube-search-python
