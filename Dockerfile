@@ -54,7 +54,8 @@ RUN mkdir -p /tmp/ && \
 COPY requirements.txt .
 
 # install dependencies
-RUN pip install -U setuptools wheel && \
+RUN pip install pip==21.0.1 && \
+    pip install -U setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
 
 # copy the content of the local src directory to the working directory
