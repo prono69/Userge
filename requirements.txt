@@ -39,7 +39,6 @@ telegraph
 tgcrypto
 urbandict==0.5
 wget
-ujson
 wikipedia
 youtube_dl>=2021.1.8
 nekos.py
