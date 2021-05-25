@@ -16,6 +16,7 @@ RUN apt -qq install -y --no-install-recommends \
     unzip \
     wget \
     ffmpeg \
+    mediainfo \
     jq
 
 # install chrome

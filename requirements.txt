@@ -37,6 +37,7 @@ speedtest-cli
 stagger
 telegraph
 tgcrypto
+ujson
 urbandict==0.5
 wget
 wikipedia
