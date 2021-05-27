@@ -16,7 +16,8 @@ from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
-from userge import userge, Message
+
+from userge import userge, Message, pool
 from userge.utils import humanbytes
 
 
@@ -40,28 +41,29 @@ async def direct_(message: Message):
     reply = "<b>Direct Links</b> :\n\n"
     for link in links:
         if 'drive.google.com' in link:
-            reply += f" 👉 {gdrive(link)}\n"
+            reply += f" 👉 {await gdrive(link)}\n"
         elif 'yadi.sk' in link:
-            reply += f" 👉 {yandex_disk(link)}\n"
+            reply += f" 👉 {await yandex_disk(link)}\n"
         elif 'cloud.mail.ru' in link:
-            reply += f" 👉 {cm_ru(link)}\n"
+            reply += f" 👉 {await cm_ru(link)}\n"
         elif 'mediafire.com' in link:
-            reply += f" 👉 {mediafire(link)}\n"
+            reply += f" 👉 {await mediafire(link)}\n"
         elif 'sourceforge.net' in link:
-            reply += f" 👉 {sourceforge(link)}\n"
+            reply += f" 👉 {await sourceforge(link)}\n"
         elif 'osdn.net' in link:
-            reply += f" 👉 {osdn(link)}\n"
+            reply += f" 👉 {await osdn(link)}\n"
         elif 'github.com' in link:
-            reply += f" 👉 {github(link)}\n"
+            reply += f" 👉 {await github(link)}\n"
         elif 'androidfilehost.com' in link:
-            reply += f" 👉 {androidfilehost(link)}\n"
+            reply += f" 👉 {await androidfilehost(link)}\n"
         elif "1drv.ms" in link:
-            reply += f" 👉 {onedrive(link)}\n"
+            reply += f" 👉 {await onedrive(link)}\n"
         else:
             reply += f" 👀 {link} is not supported!\n"
     await message.edit(reply, parse_mode="html")
 
 
+@pool.run_in_thread
 def gdrive(url: str) -> str:
     """GDrive direct links generator"""
     drive = 'https://drive.google.com'
@@ -105,6 +107,7 @@ def gdrive(url: str) -> str:
     return reply
 
 
+@pool.run_in_thread
 def yandex_disk(url: str) -> str:
     """Yandex.Disk direct links generator
     Based on https://github.com/wldhx/yadisk-direct"""
@@ -125,6 +128,7 @@ def yandex_disk(url: str) -> str:
     return reply
 
 
+@pool.run_in_thread
 def cm_ru(url: str) -> str:
     """cloud.mail.ru direct links generator
     Using https://github.com/JrMasterModelBuilder/cmrudl.py"""
@@ -149,6 +153,7 @@ def cm_ru(url: str) -> str:
     return reply
 
 
+@pool.run_in_thread
 def mediafire(url: str) -> str:
     """MediaFire direct links generator"""
     try:
@@ -166,6 +171,7 @@ def mediafire(url: str) -> str:
     return reply
 
 
+@pool.run_in_thread
 def sourceforge(url: str) -> str:
     """SourceForge direct links generator"""
     try:
@@ -187,6 +193,7 @@ def sourceforge(url: str) -> str:
     return reply
 
 
+@pool.run_in_thread
 def osdn(url: str) -> str:
     """OSDN direct links generator"""
     osdn_link = 'https://osdn.net'
@@ -209,6 +216,7 @@ def osdn(url: str) -> str:
     return reply
 
 
+@pool.run_in_thread
 def github(url: str) -> str:
     """GitHub direct links generator"""
     try:
@@ -228,6 +236,7 @@ def github(url: str) -> str:
     return reply
 
 
+@pool.run_in_thread
 def androidfilehost(url: str) -> str:
     """AFH direct links generator"""
     try:
@@ -279,11 +288,19 @@ def androidfilehost(url: str) -> str:
     return reply
 
 
+@pool.run_in_thread
 def onedrive(link: str) -> str:
     link_without_query = urlparse(link)._replace(query=None).geturl()
     direct_link_encoded = str(standard_b64encode(bytes(link_without_query, "utf-8")), "utf-8")
     direct_link1 = f"https://api.onedrive.com/v1.0/shares/u!{direct_link_encoded}/root/content"
-    return requests.head(direct_link1).next.url
+    resp = requests.head(direct_link1)
+    if resp.status_code != 302:
+        return "`Error: Unauthorized link, the link may be private`"
+    dl_link = resp.next.url
+    file_name = dl_link.rsplit("/", 1)[1]
+    resp2 = requests.head(dl_link)
+    dl_size = humanbytes(int(resp2.headers["Content-Length"]))
+    return f"[{file_name} ({dl_size})]({dl_link})"
 
 
 def useragent():
